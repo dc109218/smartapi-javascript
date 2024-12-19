@@ -10,6 +10,9 @@ npm i smartapi-javascript
 
 ```javascript
 let { SmartAPI, WebSocket,WebSocketV2 } = require('smartapi-javascript');
+const { authenticator } = require('otplib');
+
+const token = authenticator.generate('TOTP');
 
 let smart_api = new SmartAPI({
 	api_key: 'smartapi_key', // PROVIDE YOUR API KEY HERE
@@ -20,8 +23,9 @@ let smart_api = new SmartAPI({
 
 // If user does not have valid access token and refresh token then use generateSession method
 smart_api
-	.generateSession('CLIENT_CODE', 'PASSWORD', 'TOTP')
+	.generateSession('CLIENT_CODE', 'PASSWORD', token)
 	.then((data) => {
+		console.log("Session Data:", data);
 		return smart_api.getProfile();
 
 		// User Methods
